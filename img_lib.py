@@ -1,5 +1,7 @@
 import cv2 as cv
 
+# maintains aspect ratio while resizing images
+# takes only desired width or height
 def ResizeWithAspectRatio(image, width=None, height=None, inter=cv.INTER_AREA):
     dim = None
     (h, w) = image.shape[:2]
