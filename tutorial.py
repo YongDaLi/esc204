@@ -14,20 +14,18 @@ from matplotlib import pyplot as plt
 
 import img_lib
 
-filename1 = 'img1.jpg'
-filename2 = 'img2.jpg'
+filenames = ['img1.jpg', 'img2.jpg', 'img3.jpg']
 
 
 # https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_core/py_basic_ops/py_basic_ops.html#goal
 def loadFiles():
     # img = cv.imread(filename, 0) # loads image in greyscale
+    img = []
+    for name in filenames:    
+        print("Loading image: ", name)
+        img = img + [cv.imread(name)]
 
-    print("Loading image: ", filename1)
-    img1 = cv.imread(filename1)
-    print("Loading image: ", filename2)
-    img2 = cv.imread(filename2)
-
-    return img1, img2
+    return img
 
 
 # https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_core/py_basic_ops/py_basic_ops.html
@@ -53,7 +51,7 @@ def imageArithmetic(img1, img2):
 
 # https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_features_harris/py_features_harris.html
 def harrisCornerDetection(img):
-    img = cv.resize(img, (500,300))
+    img = img_lib.ResizeWithAspectRatio(img, width=400)
 
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     gray = np.float32(gray)
@@ -78,7 +76,7 @@ def harrisCornerDetection(img):
 
 # https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_feature2d/py_shi_tomasi/py_shi_tomasi.html
 def shiTomasiCornerDetection(img):
-    img = cv.resize(img, (500,300))
+    img = img_lib.ResizeWithAspectRatio(img, width=600)
 
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
@@ -103,11 +101,11 @@ def main():
     print("-"*30)
     print("\nStarting OpenCV test")
 
-    img1, img2 = loadFiles()
-    imageData(img1)
-    imageArithmetic(img1, img2)
-    harrisCornerDetection(img1)
-    shiTomasiCornerDetection(img1)
+    images = loadFiles()
+    imageData(images[0])
+    imageArithmetic(images[0], images[2])
+    harrisCornerDetection(images[2])
+    shiTomasiCornerDetection(images[2])
 
     print("-"*30)
     print("\nEnd of OpenCV test")
