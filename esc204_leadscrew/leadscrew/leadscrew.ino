@@ -1,7 +1,8 @@
 /* Yong Da Li
  * Wednesday, March 4, 2020
  * 
- * controls stepper motor fo the leadscrew 
+ * controls stepper motor for the leadscrew 
+ * 'a'=left, 'b'=right 1 full rotation = 200 steps = 8mm travel
  */
  
 // pins numbers
@@ -9,7 +10,7 @@ const int stepPin = 3;
 const int dirPin = 4; 
 
 // control parameters
-const int delayMicro = 2000;  // delay<500us doesn't spin -> vibrates
+const int delayMicro = 2000; // delay<500us doesn't spin -> vibrates
 
 // global variables
 char incoming='q';
@@ -45,7 +46,7 @@ void loop() {
   incoming = 'q';
 }
 
-// sends the required pulses, assuming direction is right
+// sends the required pulses, assuming direction is set
 // 200 steps is 1 full rotation
 void drive(int steps){
   for (int i = 0; i<steps; i++){
