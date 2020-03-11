@@ -48,7 +48,7 @@ const int servoPin = 12; // PWM
 // control parameters
 const int stepSize = 1; // degrees
 const int stepDelay = 15; //ms
-const int backwardLimit = 95;
+const int backwardLimit = 105;
 const int forwardLimit = 35;
 
 void insert();
@@ -162,10 +162,10 @@ void forward(int spd) {
     analogWrite(RightEnB, spd); 
     digitalWrite(LeftIn1, HIGH);
     digitalWrite(LeftIn2, LOW);
-    analogWrite(LeftEnA, spd-50); 
+    analogWrite(LeftEnA, spd); 
     digitalWrite(LeftIn3, HIGH);
     digitalWrite(LeftIn4, LOW);
-    analogWrite(LeftEnB, spd-50); 
+    analogWrite(LeftEnB, spd); 
 }
 
 void backward(int spd) {
