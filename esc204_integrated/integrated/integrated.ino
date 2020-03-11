@@ -5,6 +5,8 @@
  * integration of all modules for milestone 1
  */
 
+#include <Servo.h>
+
 // ------- DC motors ---------
 const int RightEnA = 6;
 const int RightEnB = 7;
@@ -20,10 +22,10 @@ const int LeftIn2 = 39;
 const int LeftIn3 = 41;
 const int LeftIn4 = 43;
 
-void forward(int speed);
-void backward(int speed);
-void turn_left(int speed);
-void turn_right(int speed);
+void forward(int spd);
+void backward(int spd);
+void turn_left(int spd);
+void turn_right(int spd);
 void halt();
 
 
@@ -41,13 +43,13 @@ void rotate_full_2();
 // ------------- servo ----------
 Servo myservo;
 int servoPos = 0; // dummy position
-const int ServoPin = 5; // PWM
+const int servoPin = 12; // PWM
 
 // control parameters
 const int stepSize = 1; // degrees
 const int stepDelay = 15; //ms
 const int backwardLimit = 95;
-const int forwardLimit = 30;
+const int forwardLimit = 35;
 
 void insert();
 void extract();
@@ -63,7 +65,7 @@ void setup() {
     Serial.begin(9600);
 
     // check connection
-    Serial.println("not dead");
+    Serial.println("Hello World!");
     
     // setup motor pints
     pinMode(RightEnA, OUTPUT);
@@ -81,7 +83,7 @@ void setup() {
     pinMode(LeftIn4, OUTPUT);
 
     // setup servo pint
-    myservo.attach(ServoPin);
+    myservo.attach(servoPin);
 
     // setup stepper drive (A4988) pins
     pinMode(stepPin, OUTPUT);
@@ -99,25 +101,23 @@ void loop() {
   
   if (Serial.available()){
     incoming = Serial.read();
-
-    if(incoming >= 'a' && incoming <= 'z') {
-      Serial.print("Recieved: ");
-      Serial.println(incoming);
-    }
+    
+    Serial.print("Recieved: ");
+    Serial.println(incoming);
     
     switch (incoming){
         // motor
         case 'w':
-            forward(200);
+            forward(255);
             break;
         case 's':
-            backward(200);
+            backward(255);
             break;
         case 'a':
-            turn_left(100);
+            turn_left(255);
             break;
         case 'd':
-            turn_right(100);
+            turn_right(255);
             break;
         case 'k':
             halt();
@@ -132,10 +132,10 @@ void loop() {
             break;
 
         // servo
-        case 'i':
+        case '1':
             insert();
             break;
-        case 'o':
+        case '2':
             extract();
             break;
 
@@ -150,67 +150,67 @@ void loop() {
 
 /* ------------- Rover driving functions ---------------
  *
- * speed = [0,255]
+ * spd = [0,255]
 */
 
-void forward(int speed) {
+void forward(int spd) {
     digitalWrite(RightIn1, HIGH);
     digitalWrite(RightIn2, LOW);
-    analogWrite(RightEnA, speed); 
+    analogWrite(RightEnA, spd); 
     digitalWrite(RightIn3, HIGH);
     digitalWrite(RightIn4, LOW);
-    analogWrite(RightEnB, speed); 
+    analogWrite(RightEnB, spd); 
     digitalWrite(LeftIn1, HIGH);
     digitalWrite(LeftIn2, LOW);
-    analogWrite(LeftEnA, speed); 
+    analogWrite(LeftEnA, spd-50); 
     digitalWrite(LeftIn3, HIGH);
     digitalWrite(LeftIn4, LOW);
-    analogWrite(LeftEnB, speed); 
+    analogWrite(LeftEnB, spd-50); 
 }
 
-void backward(int speed) {
+void backward(int spd) {
     digitalWrite(RightIn1, LOW);
     digitalWrite(RightIn2, HIGH);
-    analogWrite(RightEnA, speed);  
+    analogWrite(RightEnA, spd);  
     digitalWrite(RightIn3, LOW);
     digitalWrite(RightIn4, HIGH);
-    analogWrite(RightEnB, speed);  
+    analogWrite(RightEnB, spd);  
     digitalWrite(LeftIn1, LOW);
     digitalWrite(LeftIn2, HIGH);
-    analogWrite(LeftEnA, speed); 
+    analogWrite(LeftEnA, spd); 
     digitalWrite(LeftIn3, LOW);
     digitalWrite(LeftIn4, HIGH);
-    analogWrite(LeftEnB, speed); 
+    analogWrite(LeftEnB, spd); 
 }
 
-void turn_left(int speed) {
-    digitalWrite(RightIn1, LOW);
-    digitalWrite(RightIn2, HIGH);
-    analogWrite(RightEnA, speed);
-    digitalWrite(RightIn3, LOW);
-    digitalWrite(RightIn4, HIGH);
-    analogWrite(RightEnB, speed);  
-    digitalWrite(LeftIn1, HIGH);
-    digitalWrite(LeftIn2, LOW);
-    analogWrite(LeftEnA, speed); 
-    digitalWrite(LeftIn3, HIGH);
-    digitalWrite(LeftIn4, LOW);
-    analogWrite(LeftEnB, speed); 
-}
-
-void turn_right(int speed) {
+void turn_left(int spd) {
     digitalWrite(RightIn1, HIGH);
     digitalWrite(RightIn2, LOW);
-    analogWrite(RightEnA, speed);
+    analogWrite(RightEnA, spd);
     digitalWrite(RightIn3, HIGH);
     digitalWrite(RightIn4, LOW);
-    analogWrite(RightEnB, speed);  
+    analogWrite(RightEnB, spd);  
     digitalWrite(LeftIn1, LOW);
     digitalWrite(LeftIn2, HIGH);
-    analogWrite(LeftEnA, speed); 
+    analogWrite(LeftEnA, spd); 
     digitalWrite(LeftIn3, LOW);
     digitalWrite(LeftIn4, HIGH);
-    analogWrite(LeftEnB, speed); 
+    analogWrite(LeftEnB, spd); 
+}
+
+void turn_right(int spd) {
+    digitalWrite(RightIn1, LOW);
+    digitalWrite(RightIn2, HIGH);
+    analogWrite(RightEnA, spd);
+    digitalWrite(RightIn3, LOW);
+    digitalWrite(RightIn4, HIGH);
+    analogWrite(RightEnB, spd);  
+    digitalWrite(LeftIn1, HIGH);
+    digitalWrite(LeftIn2, LOW);
+    analogWrite(LeftEnA, spd); 
+    digitalWrite(LeftIn3, HIGH);
+    digitalWrite(LeftIn4, LOW);
+    analogWrite(LeftEnB, spd); 
 }
 
 void halt() {
@@ -264,32 +264,6 @@ void rotate_full_2(){
 
 
 // ------------- servo motor -----------------
-
-// increment by 5 degrees
-void stepForward(){
-  // get current position
-  servoPos= myservo.read();
-  myservo.write(servoPos-5);
-
-  Serial.print("*forward -> ");
-  Serial.println(servoPos);
-  
-  delay(15);
-}
-
-
-// decrement by 5 degrees
-void stepBackward(){
-  // get current position
-  servoPos= myservo.read();
-  myservo.write(servoPos+5);
-
-  Serial.print("*backward -> ");
-  Serial.println(servoPos);
-  
-  delay(15);
-}
-
 
 // forward to limit
 void insert(){
