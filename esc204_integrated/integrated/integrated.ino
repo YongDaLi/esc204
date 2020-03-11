@@ -132,10 +132,10 @@ void loop() {
             break;
 
         // servo
-        case '1':
+        case 'i':
             insert();
             break;
-        case '2':
+        case 'o':
             extract();
             break;
 
