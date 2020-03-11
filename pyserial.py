@@ -16,6 +16,7 @@ notes
 
     - however when Arduino was using USB power, it was fine
     - FIX = Arduino, servo, stepper all powered on 6*1.5V = 9V
+        - Arduino MEGA Vin can take up to 12V, so we're won't kill the Arduino
 
 
 - DC motors running on 12*1.5V = 18V
