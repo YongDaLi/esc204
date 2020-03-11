@@ -34,7 +34,7 @@ import time
 port = "COM3"
 baud = 9600
   
-print("Attempting to open port...")
+print("Attempting to open port " + port + "...")
 ser = serial.Serial(port, baud, timeout=1)
 
     # open the serial port
