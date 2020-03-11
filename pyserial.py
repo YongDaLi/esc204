@@ -1,3 +1,32 @@
+'''
+Yong Da Li
+Tuesday, March 10, 2020
+
+some code to drive the Bluetooth control
+- basically acts acts as the Arduino serial monitor
+
+notes
+=====
+- TX port is usually the odd numbered one (on Windows)
+    - COM11 or COM3
+- if servo and Arduino are powered on same 6V battery
+    - when servo actuates, pulls power, undervolts battery
+    - Arduino stops working
+        --> servo only actuates a little bit
+
+    - however when Arduino was using USB power, it was fine
+    - FIX = Arduino, servo, stepper all powered on 6*1.5V = 9V
+
+
+- DC motors running on 12*1.5V = 18V
+    - aboved recommended 12V spec
+    - but driving kind of slowly at 12V
+
+    - looks like right wheel isn't touching the ground fully
+        --> might need to adjust right side caster wheels
+            - shorten caster wheels so DC motor wheels are touching the ground more
+'''
+
 import serial
 import time
   
