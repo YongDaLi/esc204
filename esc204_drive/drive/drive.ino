@@ -12,9 +12,6 @@
  * ==
  */
 
-// Include
-#include <Servo.h>
-
 //Pin definition
 #define RightEnA 10
 #define RightEnB 11 
@@ -30,11 +27,6 @@
 #define LeftIn3 41 
 #define LeftIn4 43 
 
-#define StepPin 1 // I randomly chose these pins
-#define DirPin 2 // Diddo
-
-#define ServoPin 5 // Diddo
-
 // Headers
 void forward(int speed);
 void backward(int speed);
@@ -42,16 +34,11 @@ void turn_left(int speed);
 void turn_right(int speed);
 void stop(); // Stop stops rover and lead screw
 
-void lead_screw(int steps, int speed, bool direction); // Moves finite step
-
-void insert();
-void extract();
 
 // Global setups
 
 char val = 0;
-Servo insertion;
-int ServoPos = 0;
+
 
 void setup() {
     //Allow serial control
@@ -72,13 +59,6 @@ void setup() {
     pinMode(LeftIn2, OUTPUT);
     pinMode(LeftIn3, OUTPUT);
     pinMode(LeftIn4, OUTPUT);
-
-    // Set stepper motor pins
-    pinMode(StepPin, OUTPUT);
-    pinMode(DirPin, OUTPUT);
-
-    // Set servo pin
-    insertion.attach(ServoPin);
 }
 
 void loop() {
@@ -106,23 +86,6 @@ void loop() {
     else if (val == 'k') //Stop
     {
         stop();
-    }
-    else if (val == 'q') // Lead screw left
-    {
-        lead_screw(100, 200, 0); // test to see which way it goes
-    }
-    else if (val == 'e') // Lead screw right
-    {
-        lead_screw(100, 200, 1); // test to see which way it goes
-    }
-    else if (val == 'i') // Put IN
-    {
-        insert();
-    }
-    else if (val == 'o') // Pull OUT
-    {
-        extract();
-    }
     }
 }
 
@@ -213,84 +176,4 @@ void stop() {
     // Stop lead screw
     digitalWrite(DirPin, LOW);
     digitalWrite(StepPin, LOW);
-}
-
-/* Lead screw turning functions
- *
- * WARNING: I DID NOT CHECK THAT THE LEAD SCREW DOES NOT EXCEED ITS BOUNDS!!!
- *
- * steps = [0,600] so it doesn't exceed its bounds
- * speed = [0,255]. This mapping is not linear, nor does 0 => no speed.
- * direction = 0, 1
- *
- * void lead_screw(int steps, int speed)
- *
- * TODO:
- * > Map steps to distance
- *
- */
-
-void lead_screw(int steps, int speed, bool direction) {
-    int max_time = 600;
-
-    if(steps>600) {
-    steps = 600;
-    }
-
-    // Set direction based on direction
-    digitalWrite(DirPin, direction);
-
-    for(int i = 0; i<steps; i++) {
-    digitalWrite(StepPin, HIGH);
-    delayMicroseconds(max_time - speed); // Will this work?
-    digitalWrite(StepPin, LOW);
-    delayMicroseconds(max_time - speed);
-    }
-}
-
-/* Insertion function
- * 
- * void insert()
- * void extract()
- * 
- * WARNING: I assume its rotation goes from [0,180] degrees
- * 
- */
-
-void insert() {
-    /* 1. Push button
-     * 2. Unspin servo
-     * 
-     * Increasing servo angle
-     * 
-     * 
-     */
-    int max_servo = 180;
-
-    for(i = ServoPos; i <= max_servo; i++) {
-    insertion.write(i);
-    delay(15);
-    }
-
-    // Just to ensure it's all the way out:
-    insertion.write(max_servo);
-}
-
-void extract() {
-    /* 1. Push button
-     * 2. Unspin servo
-     * 
-     * Decreasing servo angle
-     * 
-     * 
-     */
-
-    int min_servo = 0;
-
-    while(i = ServoPos; i >= min_servo; i--) {
-    insertion.write(i);
-    delay(15);
-    }
-    // Just to ensure it's all the way back:
-    insertion.write(min_servo);
 }
