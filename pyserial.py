@@ -50,6 +50,8 @@ while True:
         ser.close()
         exit()
     else:
-        ser.write(bytes(cmd, 'utf-8'))
+        ser.write(bytes(cmd, 'utf-8'))  # UTF-8 encoding works
         out = ser.read()
-        print('Receiving...'+ out.decode('ASCII'))
+
+
+        print('Receiving...'+ out.decode('utf-8')) # doesn't look right
