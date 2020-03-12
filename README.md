@@ -1,4 +1,4 @@
-ESC204 - Computer Vision
+ESC204 - Autonomous Electric Vehicle Charging
 ========================
 This repository is for the <b>Praxis 3</b> design course in the second year <b>Engineering Science</b> curriculum at the <b>University of Toronto</b>. We design an automonous system to plug a charger into a parked electric vehicle.
 
