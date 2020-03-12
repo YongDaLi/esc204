@@ -51,6 +51,8 @@ while True:
         exit()
     else:
         ser.write(bytes(cmd, 'utf-8'))  # UTF-8 tested to work
+
+	# add some timeouts here -> read if ser.available() but timeout after 10s or smth
         out = ser.read()
 
         # ascii and utf-8 are basically the same for latin characters
