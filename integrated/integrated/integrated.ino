@@ -37,8 +37,8 @@ const int dirPin =10; // Digital ...Diddo
 const int delayMicro = 2000;
 
 void drive_leadscrew();
-void rotate_full_1();
-void rotate_full_2();
+void rotate_1();
+void rotate_2();
 
 // ------------- servo ----------
 Servo myservo;
@@ -125,10 +125,10 @@ void loop() {
             
         // lead screw
         case 'q':
-            rotate_full_1();
+            rotate_1();
             break;
         case 'e':
-            rotate_full_2();
+            rotate_2();
             break;
 
         // servo
@@ -240,24 +240,24 @@ void drive_leadscrew(int steps){
 }
 
 
-// full 360 degree rotation in 1 direction
-void rotate_full_1(){
+// rotate the other way, full rotation = 200 steps -> 1/8 rotation = 25 steps
+void rotate_1(){
   // set direction
   digitalWrite(dirPin, HIGH);
 
   // rotate 200 steps = 1 rotation
-  drive_leadscrew(200);
+  drive_leadscrew(25);
   
   Serial.println("rotated full 1");
 }
 
-// full 360 degree rotation in the other direction
-void rotate_full_2(){
+// rotate the other way, full rotation = 200 steps -> 1/8 rotation = 25 steps
+void rotate_2(){
   // set direction opposte
   digitalWrite(dirPin, LOW);
 
   // rotate 200 steps = 1 rotation
-  drive_leadscrew(200);
+  drive_leadscrew(25);
 
   Serial.println("rotated full 2");
 }
