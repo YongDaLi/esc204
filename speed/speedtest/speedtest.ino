@@ -1,8 +1,12 @@
 /*
- * Yong Da Li, David Chu
- * Tuesday, March 10, 2020
+ * Coco Huang
+ * Wednesday, March 11, 2020
  * 
- * integration of all modules for milestone 1
+ * fork from integrated.ino code
+ * testing variable speed control by powering left and right wheels differently
+ * 	- to see how well the robot turns
+ * q increases left wheel analogWrite voltage
+ * e increases right wheel analogWrite voltage
  */
 
 #include <Servo.h>
